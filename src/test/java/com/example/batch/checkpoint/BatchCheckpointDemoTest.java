@@ -39,9 +39,9 @@ public class BatchCheckpointDemoTest {
 		JobOperator jobOperator = BatchRuntime.getJobOperator();
 
 		Properties jobParameters = new Properties();
-		jobParameters.setProperty("item-count", "3");
-		jobParameters.setProperty("size", "10");
-		jobParameters.setProperty("exception-index", "8");
+		//		jobParameters.setProperty("item-count", "3");
+		//		jobParameters.setProperty("size", "10");
+		//		jobParameters.setProperty("exception-index", "8");
 		long executionId = jobOperator.start("batch-checkpoint-demo", jobParameters);
 		Batches.waitForJob(executionId);
 
@@ -68,8 +68,8 @@ public class BatchCheckpointDemoTest {
 
 		Properties jobParameters = new Properties();
 		jobParameters.setProperty("item-count", "4");
-		jobParameters.setProperty("size", "10");
-		jobParameters.setProperty("exception-index", "8");
+		//		jobParameters.setProperty("size", "10");
+		//		jobParameters.setProperty("exception-index", "8");
 		long executionId = jobOperator.start("batch-checkpoint-demo", jobParameters);
 
 		Batches.waitForJob(executionId);
