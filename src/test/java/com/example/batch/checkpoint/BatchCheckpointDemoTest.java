@@ -39,24 +39,27 @@ public class BatchCheckpointDemoTest {
 		JobOperator jobOperator = BatchRuntime.getJobOperator();
 
 		Properties jobParameters = new Properties();
-		jobParameters.setProperty("item-count", "10");
-		jobParameters.setProperty("size", "30");
-		jobParameters.setProperty("exception-index", "25");
+		jobParameters.setProperty("item-count", "3");
+		jobParameters.setProperty("size", "10");
+		jobParameters.setProperty("exception-index", "8");
 		long executionId = jobOperator.start("batch-checkpoint-demo", jobParameters);
 		Batches.waitForJob(executionId);
 
+		// 例外がスローされたのでFAILD
 		assertEquals(BatchStatus.FAILED, jobOperator.getJobExecution(executionId).getBatchStatus());
 		List<Object> items = sut.getItems();
-		assertEquals(20, items.size());
-		assertEquals(IntStream.range(0, 20).boxed().collect(Collectors.toList()), items);
+		// 失敗するindex = 8なので7まではreadに成功しているが、
+		// 8 / 3(item-count) = 2 のため 3 * 2 = 6 しかwriteへ渡っていない。
+		assertEquals(6, items.size());
+		assertEquals(IntStream.rangeClosed(1, 6).boxed().collect(Collectors.toList()), items);
 
 		executionId = jobOperator.restart(executionId, jobParameters);
 		Batches.waitForJob(executionId);
 
 		assertEquals(BatchStatus.COMPLETED,
 				jobOperator.getJobExecution(executionId).getBatchStatus());
-		assertEquals(30, items.size());
-		assertEquals(IntStream.range(0, 30).boxed().collect(Collectors.toList()), items);
+		assertEquals(10, items.size());
+		assertEquals(IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList()), items);
 	}
 
 	@Test
@@ -64,25 +67,25 @@ public class BatchCheckpointDemoTest {
 		JobOperator jobOperator = BatchRuntime.getJobOperator();
 
 		Properties jobParameters = new Properties();
-		jobParameters.setProperty("item-count", "12");
-		jobParameters.setProperty("size", "30");
-		jobParameters.setProperty("exception-index", "25");
+		jobParameters.setProperty("item-count", "4");
+		jobParameters.setProperty("size", "10");
+		jobParameters.setProperty("exception-index", "8");
 		long executionId = jobOperator.start("batch-checkpoint-demo", jobParameters);
 
 		Batches.waitForJob(executionId);
 
 		assertEquals(BatchStatus.FAILED, jobOperator.getJobExecution(executionId).getBatchStatus());
 		List<Object> items = sut.getItems();
-		assertEquals(24, items.size());
-		assertEquals(IntStream.range(0, 24).boxed().collect(Collectors.toList()), items);
+		assertEquals(4, items.size());
+		assertEquals(IntStream.rangeClosed(1, 4).boxed().collect(Collectors.toList()), items);
 
 		executionId = jobOperator.restart(executionId, jobParameters);
 		Batches.waitForJob(executionId);
 
 		assertEquals(BatchStatus.COMPLETED,
 				jobOperator.getJobExecution(executionId).getBatchStatus());
-		assertEquals(30, items.size());
-		assertEquals(IntStream.range(0, 30).boxed().collect(Collectors.toList()), items);
+		assertEquals(10, items.size());
+		assertEquals(IntStream.rangeClosed(1, 10).boxed().collect(Collectors.toList()), items);
 	}
 
 	@Deployment

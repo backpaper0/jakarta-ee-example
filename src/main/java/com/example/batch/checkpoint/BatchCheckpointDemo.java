@@ -2,6 +2,7 @@ package com.example.batch.checkpoint;
 
 import java.io.Serializable;
 import java.util.PrimitiveIterator;
+import java.util.logging.Logger;
 import java.util.stream.IntStream;
 
 import javax.batch.api.BatchProperty;
@@ -13,6 +14,8 @@ import javax.inject.Named;
 @Dependent
 @Named
 public class BatchCheckpointDemo extends AbstractItemReader {
+
+	private static final Logger logger = Logger.getLogger(BatchCheckpointDemo.class.getName());
 
 	private PrimitiveIterator.OfInt iterator;
 	private Integer value;
@@ -27,13 +30,16 @@ public class BatchCheckpointDemo extends AbstractItemReader {
 
 	@Override
 	public void open(Serializable checkpoint) throws Exception {
+		logger.info("open: " + checkpoint);
 		retry = checkpoint != null;
-		iterator = IntStream.range(checkpoint != null ? (Integer) checkpoint : 0, size).iterator();
+		iterator = IntStream.rangeClosed(checkpoint != null ? (Integer) checkpoint : 1, size)
+				.iterator();
 		value = iterator.hasNext() ? iterator.next() : null;
 	}
 
 	@Override
 	public Object readItem() throws Exception {
+		logger.info("readItem: " + value);
 		Integer v = value;
 		value = iterator.hasNext() ? iterator.next() : null;
 		if (retry == false && v == exceptionIndex) {
@@ -44,6 +50,7 @@ public class BatchCheckpointDemo extends AbstractItemReader {
 
 	@Override
 	public Serializable checkpointInfo() throws Exception {
+		logger.info("checkpointInfo: " + value);
 		return value;
 	}
 }
