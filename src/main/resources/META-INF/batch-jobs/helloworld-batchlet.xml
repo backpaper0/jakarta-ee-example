@@ -1,0 +1,9 @@
+<job xmlns="http://xmlns.jcp.org/xml/ns/javaee" id="job1" version="1.0">
+	<step id="step1">
+		<batchlet ref="helloWorldBatchlet">
+			<properties>
+				<property name="message" value="Hello, Batchlet!" />
+			</properties>
+		</batchlet>
+	</step>
+</job>

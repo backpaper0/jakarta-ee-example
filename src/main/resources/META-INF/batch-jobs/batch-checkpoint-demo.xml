@@ -1,0 +1,13 @@
+<job xmlns="http://xmlns.jcp.org/xml/ns/javaee" id="job1" version="1.0">
+	<step id="step1">
+		<chunk item-count="#{jobParameters['item-count']}">
+			<reader ref="batchCheckpointDemo">
+				<properties>
+					<property name="size" value="#{jobParameters['size']}" />
+					<property name="exception-index" value="#{jobParameters['exception-index']}" />
+				</properties>
+			</reader>
+			<writer ref="items" />
+		</chunk>
+	</step>
+</job>

@@ -1,0 +1,14 @@
+<job xmlns="http://xmlns.jcp.org/xml/ns/javaee" id="job1" version="1.0">
+	<step id="step1">
+		<chunk>
+			<reader ref="helloWorldItemReader">
+				<properties>
+					<property name="message" value="Hello, Chunk!" />
+					<property name="size" value="3" />
+				</properties>
+			</reader>
+			<processor ref="helloWorldItemProcessor" />
+			<writer ref="helloWorldItemWriter" />
+		</chunk>
+	</step>
+</job>
