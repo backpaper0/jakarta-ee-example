@@ -2,15 +2,16 @@ package com.example.ra.inbound.demo;
 
 import java.util.logging.Logger;
 
+import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
-import javax.enterprise.context.Dependent;
 
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
 import com.example.ra.inbound.TickListener;
 
-@Dependent
-@MessageDriven
+@MessageDriven(activationConfig = {
+		@ActivationConfigProperty(propertyName = "interval", propertyValue = "1000")
+})
 @ResourceAdapter("demo.ear#demo-ra.rar")
 public class TickDemo implements TickListener {
 

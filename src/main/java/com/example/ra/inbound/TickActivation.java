@@ -12,15 +12,23 @@ import javax.transaction.xa.Xid;
 
 public class TickActivation extends TimerTask implements XAResource {
 
+	private final BootstrapContext ctx;
+	private final TickActivationSpec spec;
+
 	private Timer timer;
 	private AtomicInteger value;
 	private TickListener listener;
 
-	public void start(BootstrapContext ctx, TickListener listener) throws UnavailableException {
+	public TickActivation(BootstrapContext ctx, TickActivationSpec spec) {
+		this.ctx = ctx;
+		this.spec = spec;
+	}
+
+	public void start(TickListener listener) throws UnavailableException {
 		this.value = new AtomicInteger();
 		this.listener = listener;
 		this.timer = ctx.createTimer();
-		this.timer.scheduleAtFixedRate(this, 100, 1000);
+		this.timer.scheduleAtFixedRate(this, 100, spec.getInterval());
 	}
 
 	@Override

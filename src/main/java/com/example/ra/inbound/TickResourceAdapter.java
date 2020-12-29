@@ -32,10 +32,10 @@ public class TickResourceAdapter implements ResourceAdapter {
 	@Override
 	public void endpointActivation(MessageEndpointFactory endpointFactory, ActivationSpec spec)
 			throws ResourceException {
-		TickActivation activation = new TickActivation();
+		TickActivation activation = new TickActivation(ctx, (TickActivationSpec) spec);
 		TickListener listener = (TickListener) endpointFactory.createEndpoint(activation);
 		activations.put(spec, activation);
-		activation.start(ctx, listener);
+		activation.start(listener);
 	}
 
 	@Override
