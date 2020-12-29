@@ -12,3 +12,6 @@ up-wildfly:
 logs-wildfly:
 	docker logs -f wildfly
 
+exec-bash-wildfly:
+	docker exec -it wildfly bash
+
