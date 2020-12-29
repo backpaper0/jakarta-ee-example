@@ -5,10 +5,13 @@ import java.util.concurrent.TimeUnit;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.arquillian.protocol.servlet.arq514hack.descriptors.api.application.ApplicationDescriptor;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.EnterpriseArchive;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.jboss.shrinkwrap.api.spec.ResourceAdapterArchive;
+import org.jboss.shrinkwrap.descriptor.api.Descriptors;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -38,9 +41,13 @@ public class TickDemoTest {
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "demo.jar")
 				.addClasses(TickDemo.class);
 
+		ApplicationDescriptor applicationXml = Descriptors.create(ApplicationDescriptor.class)
+				.connectorModule("demo-ra.rar")
+				.javaModule("demo.jar");
+
 		EnterpriseArchive ear = ShrinkWrap.create(EnterpriseArchive.class, "demo.ear")
 				.addAsModules(rar, jar)
-				.addAsApplicationResource("com/example/ra/application.xml", "application.xml");
+				.setApplicationXML(new StringAsset(applicationXml.exportAsString()));
 		return ear;
 	}
 }
