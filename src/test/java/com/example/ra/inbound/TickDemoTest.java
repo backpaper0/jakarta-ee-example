@@ -1,4 +1,4 @@
-package com.example.ra;
+package com.example.ra.inbound;
 
 import java.util.concurrent.TimeUnit;
 
@@ -12,11 +12,7 @@ import org.jboss.shrinkwrap.api.spec.ResourceAdapterArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.example.ra.tick.TickActivation;
-import com.example.ra.tick.TickActivationSpec;
-import com.example.ra.tick.TickListener;
-import com.example.ra.tick.TickResourceAdapter;
-import com.example.ra.tick.demo.TickDemo;
+import com.example.ra.inbound.demo.TickDemo;
 
 @RunWith(Arquillian.class)
 public class TickDemoTest {

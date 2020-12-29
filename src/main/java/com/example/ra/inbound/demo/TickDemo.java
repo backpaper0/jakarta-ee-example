@@ -1,4 +1,4 @@
-package com.example.ra.tick.demo;
+package com.example.ra.inbound.demo;
 
 import java.util.logging.Logger;
 
@@ -7,7 +7,7 @@ import javax.enterprise.context.Dependent;
 
 import org.jboss.ejb3.annotation.ResourceAdapter;
 
-import com.example.ra.tick.TickListener;
+import com.example.ra.inbound.TickListener;
 
 @Dependent
 @MessageDriven

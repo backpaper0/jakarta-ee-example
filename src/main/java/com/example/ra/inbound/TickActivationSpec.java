@@ -1,4 +1,4 @@
-package com.example.ra.tick;
+package com.example.ra.inbound;
 
 import javax.resource.ResourceException;
 import javax.resource.spi.Activation;
