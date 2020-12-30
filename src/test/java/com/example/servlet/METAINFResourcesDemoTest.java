@@ -23,8 +23,6 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.example.servlet.METAINFResourcesDemo;
-
 @RunWith(Arquillian.class)
 public class METAINFResourcesDemoTest {
 
@@ -40,8 +38,7 @@ public class METAINFResourcesDemoTest {
 
 		assertEquals("text/html", response.headers().firstValue("Content-Type").get());
 
-		String expected = Files
-				.readString(Path.of("src/main/resources/META-INF/resources/index.html"));
+		String expected = Files.readString(Path.of("src/main/resources/index.html"));
 		assertEquals(expected, response.body());
 	}
 
@@ -57,8 +54,7 @@ public class METAINFResourcesDemoTest {
 
 		assertEquals("text/html", response.headers().firstValue("Content-Type").get());
 
-		String expected = Files
-				.readString(Path.of("src/main/resources/META-INF/resources/index.html"));
+		String expected = Files.readString(Path.of("src/main/resources/index.html"));
 		assertEquals(expected, response.body());
 	}
 
@@ -66,7 +62,7 @@ public class METAINFResourcesDemoTest {
 	public static WebArchive createDeployment() {
 
 		JavaArchive jar = ShrinkWrap.create(JavaArchive.class)
-				.addAsResource("META-INF/resources/index.html");
+				.addAsResource("index.html", "META-INF/resources/index.html");
 
 		return ShrinkWrap.create(WebArchive.class, "ROOT.war")
 				.addClass(METAINFResourcesDemo.class)
