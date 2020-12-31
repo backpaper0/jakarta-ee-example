@@ -1,0 +1,12 @@
+<job xmlns="http://xmlns.jcp.org/xml/ns/javaee" id="job1" version="1.0">
+	<step id="step1">
+		<chunk>
+			<reader ref="skipDemoItemReader" />
+			<processor ref="skipDemoItemProcessor" />
+			<writer ref="items" />
+			<skippable-exception-classes>
+				<include class="com.example.batch.skip.SkipException" />
+			</skippable-exception-classes>
+		</chunk>
+	</step>
+</job>
