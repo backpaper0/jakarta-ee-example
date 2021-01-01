@@ -7,7 +7,7 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
 @Dependent
-public class CDIEventDemo {
+public class EventDemo {
 
 	@Inject
 	private Event<Foo> event;

@@ -16,14 +16,14 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.example.cdi.event.CDIEventDemo;
+import com.example.cdi.event.EventDemo;
 import com.example.cdi.event.Foo;
 
 @RunWith(Arquillian.class)
-public class CDIEventTest {
+public class EventTest {
 
 	@Inject
-	private CDIEventDemo demo;
+	private EventDemo demo;
 
 	@Inject
 	@Named("list")
@@ -39,6 +39,6 @@ public class CDIEventTest {
 	@Deployment
 	public static JavaArchive createDeployment() {
 		return ShrinkWrap.create(JavaArchive.class)
-				.addPackages(true, CDIEventDemo.class.getPackage());
+				.addPackages(true, EventDemo.class.getPackage());
 	}
 }
