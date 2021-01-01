@@ -1,9 +1,10 @@
-package com.example.cdi.event;
+package com.example.cdi;
 
 import static org.junit.Assert.*;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,11 +16,14 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.example.cdi.event.CDIEventDemo;
+import com.example.cdi.event.Foo;
+
 @RunWith(Arquillian.class)
 public class CDIEventTest {
 
 	@Inject
-	private FooTrigger trigger;
+	private CDIEventDemo demo;
 
 	@Inject
 	@Named("list")
@@ -27,14 +31,14 @@ public class CDIEventTest {
 
 	@Test
 	public void testEvent() throws Exception {
-		Foo foo = new Foo();
-		trigger.fire(foo);
-		assertEquals(Collections.singletonList(foo), list);
+		List<Foo> fooList = IntStream.range(0, 10).mapToObj(Foo::new).collect(Collectors.toList());
+		demo.fire(fooList);
+		assertEquals(fooList, list);
 	}
 
 	@Deployment
 	public static JavaArchive createDeployment() {
 		return ShrinkWrap.create(JavaArchive.class)
-				.addClasses(Foo.class, FooTrigger.class, FooHandler.class, ListProvider.class);
+				.addPackages(true, CDIEventDemo.class.getPackage());
 	}
 }
