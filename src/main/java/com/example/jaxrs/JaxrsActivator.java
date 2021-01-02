@@ -1,4 +1,4 @@
-package com.example.initialization;
+package com.example.jaxrs;
 
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;

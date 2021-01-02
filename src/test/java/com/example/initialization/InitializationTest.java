@@ -35,6 +35,8 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import com.example.jaxrs.JaxrsActivator;
+
 /**
  * <a href="http://backpaper0.github.io/2015/12/24/run_at_startup_in_javaee.html">
  * Java EEアプリケーションで起動時になにかしらの処理をする方法
