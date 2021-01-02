@@ -10,6 +10,7 @@ up-wildfly:
 	docker exec wildfly /opt/jboss/wildfly/bin/add-user.sh admin secret --silent
 
 logs-wildfly:
+	@clear
 	docker logs -f --since=0m wildfly
 
 exec-bash-wildfly:
