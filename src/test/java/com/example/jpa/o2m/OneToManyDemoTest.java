@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.persistence.NoResultException;
 import javax.transaction.UserTransaction;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -30,22 +31,36 @@ public class OneToManyDemoTest {
 		{
 			utx.begin();
 			Foo actual = demo.selectFoo(1);
-			Foo expected = new Foo(1, List.of(new Bar(4), new Bar(5)));
+			Foo expected = new Foo(1, List.of(new Bar(3), new Bar(4)));
 			assertEquals(expected, actual);
 			utx.commit();
 		}
 		{
 			utx.begin();
 			Foo actual = demo.selectFoo(2);
-			Foo expected = new Foo(2, List.of(new Bar(6)));
+			Foo expected = new Foo(2, List.of());
 			assertEquals(expected, actual);
 			utx.commit();
 		}
 		{
 			utx.begin();
-			Foo actual = demo.selectFoo(3);
-			Foo expected = new Foo(3, List.of());
+			assertThrows(NoResultException.class, () -> demo.selectFoo(3));
+			utx.commit();
+		}
+	}
+
+	@Test
+	public void selectFooByBarId() throws Exception {
+		{
+			utx.begin();
+			Foo actual = demo.selectFooByBarId(3);
+			Foo expected = new Foo(1, List.of(new Bar(3), new Bar(4)));
 			assertEquals(expected, actual);
+			utx.commit();
+		}
+		{
+			utx.begin();
+			assertThrows(NoResultException.class, () -> demo.selectFooByBarId(1));
 			utx.commit();
 		}
 	}
