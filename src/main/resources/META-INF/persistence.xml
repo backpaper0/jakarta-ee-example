@@ -4,7 +4,7 @@
 	version="2.1">
 
 	<persistence-unit name="demo">
-		<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+		<jta-data-source>java:/PostgresDS</jta-data-source>
 		<exclude-unlisted-classes>false</exclude-unlisted-classes>
 		<properties>
 			<property name="javax.persistence.schema-generation.database.action" value="drop-and-create" />

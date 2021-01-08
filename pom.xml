@@ -85,6 +85,12 @@
 			<groupId>org.glassfish.jersey.inject</groupId>
 			<artifactId>jersey-hk2</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.18</version>
+			<scope>runtime</scope>
+		</dependency>
 	</dependencies>
 
 	<profiles>
@@ -101,6 +107,22 @@
 					<scope>test</scope>
 				</dependency>
 			</dependencies>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.wildfly.plugins</groupId>
+						<artifactId>wildfly-maven-plugin</artifactId>
+						<version>2.0.2.Final</version>
+						<configuration>
+							<groupId>org.postgresql</groupId>
+							<artifactId>postgresql</artifactId>
+							<name>postgresql</name>
+							<username>admin</username>
+							<password>secret</password>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
 		</profile>
 		<profile>
 			<id>payara</id>
