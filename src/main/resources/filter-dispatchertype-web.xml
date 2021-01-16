@@ -42,6 +42,19 @@
 		<url-pattern>/error</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>JSP</servlet-name>
+		<servlet-class>com.example.servlet.filterdispatchertype.DemoServlet</servlet-class>
+		<init-param>
+			<param-name>name</param-name>
+			<param-value>JSP</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>JSP</servlet-name>
+		<url-pattern>/jsp</url-pattern>
+	</servlet-mapping>
+
 	<filter>
 		<filter-name>Foo</filter-name>
 		<filter-class>com.example.servlet.filterdispatchertype.DemoFilter</filter-class>

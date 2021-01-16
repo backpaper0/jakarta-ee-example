@@ -48,11 +48,25 @@ public class FilterDispatcherTypeTest {
 		}
 	}
 
+	@Test
+	@RunAsClient
+	public void jsp(@ArquillianResource URL url) throws Exception {
+		try (var response = client.target(url.toURI()).path("jsp").request().get()) {
+			String body = response.readEntity(String.class)
+					//末尾に改行が含まれるっぽいのでtrimしちゃおう
+					.trim();
+			assertEquals("Foo Qux JSP Bar Qux demo.jsp", body);
+		}
+	}
+
 	@Deployment(testable = false)
 	public static WebArchive createDeployment() {
-		return ShrinkWrap
+		WebArchive war = ShrinkWrap
 				.create(WebArchive.class)
 				.addClasses(DemoServlet.class, DemoFilter.class)
-				.setWebXML("filter-dispatchertype-web.xml");
+				.setWebXML("filter-dispatchertype-web.xml")
+				.addAsWebInfResource("demo.jsp");
+		System.out.println(war.toString(true));
+		return war;
 	}
 }

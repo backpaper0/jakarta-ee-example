@@ -42,6 +42,11 @@ public class DemoServlet extends HttpServlet {
 			throw new RuntimeException();
 		}
 
+		if (name.equalsIgnoreCase("JSP")) {
+			req.getRequestDispatcher("/WEB-INF/demo.jsp").forward(req, resp);
+			return;
+		}
+
 		resp.setContentType("text/demo");
 		try (PrintWriter out = resp.getWriter()) {
 			out.print(names.stream().collect(Collectors.joining(" ")));
