@@ -42,22 +42,21 @@ public class MaxResultsTest {
 
     @Test
     public void noMaxResults() throws Exception {
-        CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<Foo> q = cb.createQuery(Foo.class);
-        Root<Foo> foo = q.from(Foo.class);
-        q.select(foo).orderBy(cb.asc(foo.get("id")));
-        List<Foo> entities = em.createQuery(q).getResultList();
+        List<Foo> entities = em.createQuery(query()).getResultList();
         assertEquals(List.of(new Foo(1), new Foo(2), new Foo(3)), entities);
     }
 
     @Test
     public void maxResults() throws Exception {
+        List<Foo> entities = em.createQuery(query()).setMaxResults(1).getResultList();
+        assertEquals(List.of(new Foo(1)), entities);
+    }
+
+    private CriteriaQuery<Foo> query() {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<Foo> q = cb.createQuery(Foo.class);
         Root<Foo> foo = q.from(Foo.class);
-        q.select(foo).orderBy(cb.asc(foo.get("id")));
-        List<Foo> entities = em.createQuery(q).setMaxResults(1).getResultList();
-        assertEquals(List.of(new Foo(1)), entities);
+        return q.select(foo).orderBy(cb.asc(foo.get("id")));
     }
 
     @Deployment
