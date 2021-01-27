@@ -10,12 +10,14 @@ public class Foo {
 
 	@Id
 	private Integer id;
+	private String tag;
 
 	public Foo() {
 	}
 
-	public Foo(Integer id) {
+	public Foo(Integer id, String tag) {
 		this.id = id;
+		this.tag = tag;
 	}
 
 	public Integer getId() {
@@ -24,6 +26,14 @@ public class Foo {
 
 	public void setId(Integer id) {
 		this.id = id;
+	}
+
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
 	}
 
 	@Override
@@ -41,11 +51,11 @@ public class Foo {
 			return false;
 		}
 		Foo other = (Foo) obj;
-		return Objects.equals(id, other.id);
+		return Objects.equals(id, other.id) && Objects.equals(tag, other.tag);
 	}
 
 	@Override
 	public String toString() {
-		return "Foo [id=" + id + "]";
+		return "Foo [id=" + id + ", tag=" + tag + "]";
 	}
 }

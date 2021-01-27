@@ -10,7 +10,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Tuple;
 import javax.persistence.TupleElement;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 import javax.transaction.UserTransaction;
@@ -40,7 +42,7 @@ public class JpaMiscTest {
 	public void init() throws Exception {
 		utx.begin();
 
-		em.merge(new Foo(1));
+		em.merge(new Foo(1, "xxx"));
 
 		em.merge(new Bar(1, "aaa"));
 		em.merge(new Bar(2, "aaa"));
@@ -102,6 +104,35 @@ public class JpaMiscTest {
 		MatcherAssert.assertThat(result.get(0), new AggregateMatcher("aaa", 6, 2.0, 3, 3, 1));
 		MatcherAssert.assertThat(result.get(1), new AggregateMatcher("bbb", 9, 4.5, 2, 5, 4));
 		MatcherAssert.assertThat(result.get(2), new AggregateMatcher("ccc", 6, 6.0, 1, 6, 6));
+	}
+
+	@Test
+	public void updateByCriteria() throws Exception {
+		utx.begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaUpdate<Bar> q = cb.createCriteriaUpdate(Bar.class);
+		Root<Bar> bar = q.from(Bar.class);
+		q.set(bar.get("tag"), "xxx")
+				.where(cb.between(bar.get("id"), 1, 3));
+		int result = em.createQuery(q).executeUpdate();
+		utx.commit();
+		assertEquals(3, result);
+		assertEquals(new Bar(1, "xxx"), em.find(Bar.class, 1));
+		assertEquals(new Bar(2, "xxx"), em.find(Bar.class, 2));
+		assertEquals(new Bar(3, "xxx"), em.find(Bar.class, 3));
+	}
+
+	@Test
+	public void deleteByCriteria() throws Exception {
+		utx.begin();
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaDelete<Foo> q = cb.createCriteriaDelete(Foo.class);
+		Root<Foo> foo = q.from(Foo.class);
+		q.where(cb.equal(foo.get("id"), 1));
+		int result = em.createQuery(q).executeUpdate();
+		utx.commit();
+		assertEquals(1, result);
+		assertNull(em.find(Foo.class, 1));
 	}
 
 	@Deployment
