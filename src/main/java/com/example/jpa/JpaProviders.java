@@ -3,16 +3,26 @@ package com.example.jpa;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Produces;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 
 @Dependent
 public class JpaProviders {
 
-	@PersistenceContext(unitName = "demo")
-	private EntityManager em;
+    @PersistenceUnit(unitName = "demo")
+    private EntityManagerFactory emf;
 
-	@Produces
-	public EntityManager entityManager() {
-		return em;
-	}
+    @PersistenceContext(unitName = "demo")
+    private EntityManager em;
+
+    @Produces
+    public EntityManagerFactory entityManagerFactory() {
+        return emf;
+    }
+
+    @Produces
+    public EntityManager entityManager() {
+        return em;
+    }
 }
