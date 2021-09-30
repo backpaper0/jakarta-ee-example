@@ -10,7 +10,7 @@ up:
 		sleep 1;\
 	done
 	docker exec wildfly /opt/jboss/wildfly/bin/add-user.sh admin secret --silent
-	mvn wildfly:deploy-artifact
+	./mvnw wildfly:deploy-artifact
 	docker exec wildfly /opt/jboss/wildfly/bin/jboss-cli.sh --connect --command='/subsystem=datasources/data-source=PostgresDS:add(\
 		jndi-name=java:/PostgresDS, driver-name=postgresql, driver-class=org.postgresql.Driver, \
 		connection-url=jdbc:postgresql://db:5432/demodb, user-name=demouser, password=secret)'
