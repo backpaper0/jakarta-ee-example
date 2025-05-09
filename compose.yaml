@@ -1,0 +1,20 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: demodb
+      POSTGRES_USER: demouser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    command: -c log_statement=all
+
+  wildfly:
+    image: quay.io/wildfly/wildfly:24.0.0.Final
+    ports:
+      - "8080:8080"
+      - "9990:9990"
+    # Resource Adapter（MDBの方かも？）を試すためにstandalone-full.xmlを使っている。詳しいことはわからん。
+    command: /opt/jboss/wildfly/bin/standalone.sh -b=0.0.0.0 -bmanagement=0.0.0.0 -c standalone-full.xml
+    depends_on:
+      - db
